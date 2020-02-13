@@ -52,7 +52,7 @@ export default {
      * @param {number} id
      */
     onRemoveRecipe(id) {
-      console.log(id);
+      this.current = null
       this.recipes = this.recipes.filter(r => r.id !== id)
     }
   }
