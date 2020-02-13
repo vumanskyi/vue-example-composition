@@ -1,10 +1,16 @@
 <template>
   <div class="container">
-    <AddRecipe />
+    <AddRecipe :on-add="addRecipe"/>
 
     <div class="columns">
-      <RecipeList />
-      <RecipeDetail />
+      <RecipeList
+              :recipes="recipes"
+              @select="onSelectRecipes"
+      />
+      <RecipeDetail
+              :recipe="current"
+              @remove="onRemoveRecipe"
+      />
     </div>
   </div>
 </template>
@@ -20,6 +26,35 @@ export default {
     AddRecipe,
     RecipeDetail,
     RecipeList
+  },
+  data() {
+    return {
+      recipes: [],
+      current: null
+    }
+  },
+  methods: {
+    /**
+     * @param {Object} recipe
+     */
+    addRecipe(recipe) {
+      this.recipes.push(recipe)
+    },
+
+    /**
+     * @param {number} id
+     */
+    onSelectRecipes(id) {
+      this.current = this.recipes.find(r => r.id === id)
+    },
+
+    /**
+     * @param {number} id
+     */
+    onRemoveRecipe(id) {
+      console.log(id);
+      this.recipes = this.recipes.filter(r => r.id !== id)
+    }
   }
 }
 </script>

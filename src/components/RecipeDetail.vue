@@ -1,17 +1,46 @@
 <template>
     <div class="detail">
-        <div class="recipe">
-            <h2>Name recipe</h2>
-            <a href="#">Show</a>
-            <p>Description</p>
-            <button class="btn remove">Remove</button>
+        <div class="recipe" v-if="recipe">
+            <h2>{{ recipe.title }}</h2>
+            <a
+                    href="#"
+                    @click="toggle">
+                {{ visible ? 'Hide' : 'Show' }}
+            </a>
+            <p v-if="visible">{{ recipe.description }}</p>
+            <button
+                    class="btn remove"
+                    @click="$emit('remove', recipe.id)">
+                Remove
+            </button>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: "RecipeDetail"
+        name: "RecipeDetail",
+        props: {
+            recipe: {
+                type: Object,
+            }
+        },
+        data() {
+            return {
+                visible: false
+            }
+        },
+        watch: {
+            recipe() {
+                this.visible = false
+            }
+        },
+        methods: {
+            toggle(e) {
+                e.preventDefault()
+                this.visible = !this.visible
+            }
+        }
     }
 </script>
 

@@ -1,18 +1,28 @@
 <template>
-    <div class="list">
-        <div>
-            <div class="card">
-                <h2 class="card-title">Recipe Name</h2>
+    <div class="list" :class="{empty: recipes.length === 0}">
+        <div v-if="recipes.length">
+            <div
+                class="card"
+                v-for="recipe in recipes"
+                v-bind:key="recipe.id"
+                @click="$emit('select', recipe.id)"
+            >
+                <h2 class="card-title">{{ recipe.title }}</h2>
             </div>
         </div>
 
-        <p class="center">You don't have recipes. Add them please!</p>
+        <p v-else class="center mt-10">You don't have recipes. Add them please!</p>
     </div>
 </template>
 
 <script>
     export default {
-        name: "RecipeList"
+        name: "RecipeList",
+        props: {
+            recipes: {
+                type: Array
+            }
+        }
     }
 </script>
 
@@ -37,5 +47,9 @@
     }
     .list {
         background: #fffeee;
+    }
+
+    .mt-10 {
+        margin-top: .625rem;
     }
 </style>

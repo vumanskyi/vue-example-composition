@@ -1,25 +1,63 @@
 <template>
-    <form class="form">
+    <form class="form" @submit="onSubmit">
         <h1>Add recipe</h1>
         <div>
             <div class="input">
-                <input type="text" placeholder="Name recipe">
+                <input type="text" placeholder="Name recipe" v-model="title">
             </div>
             <div class="input">
-                <input type="text" placeholder="Description">
+                <input type="text" placeholder="Description" v-model="description">
             </div>
         </div>
 
         <div class="buttons">
-            <button class="btn" type="submit">Create</button>
-            <button class="btn secondary" type="button">Remove</button>
+            <button class="btn" type="submit" :disabled="!isValid">Create</button>
+            <button class="btn secondary" type="button" @click="toggle">
+                {{ visible ? 'Remove' : 'Show'}} form
+            </button>
         </div>
     </form>
 </template>
 
 <script>
     export default {
-        name: "AddRecipe"
+        name: "AddRecipe",
+        data() {
+            return {
+                title: '',
+                description: '',
+                visible: true
+            }
+        },
+        props: {
+            onAdd: {
+                type: Function,
+                required: true
+            }
+        },
+        computed: {
+            isValid() {
+                return this.title.trim() && this.description.trim()
+            }
+        },
+        methods: {
+            toggle() {
+                this.visible = !this.visible;
+            },
+            onSubmit(e) {
+                e.preventDefault();
+
+                const recipe = {
+                    id: Date.now().toString(),
+                    title: this.title.trim(),
+                    description: this.description.trim(),
+                }
+
+                this.title = this.description = ''
+
+                this.onAdd(recipe)
+            }
+        }
     }
 </script>
 
