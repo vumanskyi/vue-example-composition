@@ -1,12 +1,12 @@
 <template>
-    <form class="form" @submit="onSubmit">
+    <form class="form" @submit="onSubmit" >
         <h1>Add recipe</h1>
-        <div>
+        <div v-if="visible">
             <div class="input">
-                <input type="text" placeholder="Name recipe" v-model="title">
+                <input type="text" placeholder="Name recipe" v-model="form.title">
             </div>
             <div class="input">
-                <input type="text" placeholder="Description" v-model="description">
+                <input type="text" placeholder="Description" v-model="form.description">
             </div>
         </div>
 
@@ -20,42 +20,21 @@
 </template>
 
 <script>
+    import {useToggle} from "@/composition/toggle";
+    import {useForm} from "@/composition/form";
+
     export default {
         name: "AddRecipe",
-        data() {
+        setup(props) {
             return {
-                title: '',
-                description: '',
-                visible: true
+                ...useForm(props),
+                ...useToggle()
             }
         },
         props: {
             onAdd: {
                 type: Function,
                 required: true
-            }
-        },
-        computed: {
-            isValid() {
-                return this.title.trim() && this.description.trim()
-            }
-        },
-        methods: {
-            toggle() {
-                this.visible = !this.visible;
-            },
-            onSubmit(e) {
-                e.preventDefault();
-
-                const recipe = {
-                    id: Date.now().toString(),
-                    title: this.title.trim(),
-                    description: this.description.trim(),
-                }
-
-                this.title = this.description = ''
-
-                this.onAdd(recipe)
             }
         }
     }
