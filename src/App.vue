@@ -15,14 +15,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import AddRecipe from '@/components/AddRecipe'
 import RecipeDetail from '@/components/RecipeDetail'
 import RecipeList from '@/components/RecipeList'
 import {useRecipes} from "@/composition/recipes";
 
-export default {
-  name: 'App',
+
+@Component({
   components: {
     AddRecipe,
     RecipeDetail,
@@ -32,8 +33,9 @@ export default {
     return {
       ...useRecipes()
     }
-  },
-}
+  }
+})
+export default class App extends Vue {}
 </script>
 
 <style>
